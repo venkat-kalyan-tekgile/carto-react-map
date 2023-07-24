@@ -1,27 +1,14 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, ListItemButton, Divider, Button, IconButton } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { List, ListItem, ListItemText, ListItemButton, Divider, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-
 const ProjectList = ({ projects }) => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  // const [selectedProject, setSelectedProject] = useState(null);
+  // const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const handleClick = (project) => {
-    setSelectedProject(project);
-    setSettingsOpen(true);
-  };
-
-  const handleEdit = (projectId) => {
-    
-    console.log(`Edit project ${projectId}`);
-  };
-
-  const handleSettings = (project) => {
-    setSelectedProject(project);
-    setSettingsOpen(true);
+  const handleDoubleClick = (projectId) => {
+   
+    console.log(`Double-clicked on project ${projectId}`);
   };
 
   return (
@@ -34,21 +21,14 @@ const ProjectList = ({ projects }) => {
       <Divider />
       {projects.map((project) => (
         <React.Fragment key={project.id}>
-          <ListItem>
-          <ListItemText primary={project.name} />
-            <IconButton onClick={() => handleEdit(project.id)} edge="end" aria-label="edit">
-              <Link to={`/edit/${project.id}`} style={{ color: 'inherit' }}>
-                <EditIcon />
-              </Link>
-            </IconButton>
-            <IconButton onClick={() => handleSettings(project)} edge="end" aria-label="settings">
-              <SettingsIcon />
-            </IconButton>
+          <ListItem onDoubleClick={() => handleDoubleClick(project.id)}>
+            <Link to={`/edit/${project.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+              <ListItemText primary={project.name} />
+            </Link>
           </ListItem>
           <Divider />
         </React.Fragment>
       ))}
-      
     </List>
   );
 };
