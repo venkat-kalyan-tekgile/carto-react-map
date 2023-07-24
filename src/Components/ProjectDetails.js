@@ -6,7 +6,7 @@ const ProjectEditForm = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
 
-  // Fake data for the dropdowns
+  
   const planOptions = ['Plan A', 'Plan B', 'Plan C'];
   const modelOptions = ['Model X', 'Model Y', 'Model Z'];
   const parameterOptions = ['Parameter 1', 'Parameter 2', 'Parameter 3'];
@@ -31,7 +31,7 @@ const ProjectEditForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle the form submission here (e.g., update the project details and navigate back to the map page)
+
     console.log('Updated Project:', project);
     navigate('/');
   };

@@ -66,13 +66,11 @@ const MapComponent = ({ showProjectList }) => {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Navbar username={username} />
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
-        <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
-        {showProjectList && ( // Conditionally render the ProjectList
+      {showProjectList && ( 
           <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
             <ProjectList projects={projects} />
           </div>
         )}
-        </div>
         {isLoading && (
           <div
             style={{

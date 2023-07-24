@@ -15,7 +15,7 @@ const ProjectList = ({ projects }) => {
   };
 
   const handleEdit = (projectId) => {
-    // Handle edit action here (e.g., navigate to the project edit page)
+    
     console.log(`Edit project ${projectId}`);
   };
 
