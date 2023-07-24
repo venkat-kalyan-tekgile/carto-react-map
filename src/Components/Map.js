@@ -9,7 +9,7 @@ import ProjectList from './ProjectList';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsaDVyeDV2ZTJhcXczZ3F2a3hkajc3MjIifQ.TTwoxgxSMDeHtVdbvZ6hLA';
 
-const MapComponent = () => {
+const MapComponent = ({ showProjectList }) => {
 
   const mapContainerRef = useRef(null);
   const drawRef = useRef(null);
@@ -67,7 +67,11 @@ const MapComponent = () => {
       <Navbar username={username} />
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
         <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
-          <ProjectList projects={projects} />
+        {showProjectList && ( // Conditionally render the ProjectList
+          <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
+            <ProjectList projects={projects} />
+          </div>
+        )}
         </div>
         {isLoading && (
           <div
