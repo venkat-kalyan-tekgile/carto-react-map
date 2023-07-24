@@ -1,10 +1,10 @@
 import React from 'react';
-import MapComponent from './Components/Map';
+import AppRouter from './AppRouter';
 
 function App() {
   return (
     <div>
-      <MapComponent />
+      <AppRouter />
     </div>
   );
 }

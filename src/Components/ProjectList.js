@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { List, ListItem, ListItemText, ListItemButton, Divider, Button, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Link } from 'react-router-dom';
 
 
 const ProjectList = ({ projects }) => {
@@ -34,9 +35,11 @@ const ProjectList = ({ projects }) => {
       {projects.map((project) => (
         <React.Fragment key={project.id}>
           <ListItem>
-            <ListItemText primary={project.name} />
+          <ListItemText primary={project.name} />
             <IconButton onClick={() => handleEdit(project.id)} edge="end" aria-label="edit">
-              <EditIcon />
+              <Link to={`/edit/${project.id}`} style={{ color: 'inherit' }}>
+                <EditIcon />
+              </Link>
             </IconButton>
             <IconButton onClick={() => handleSettings(project)} edge="end" aria-label="settings">
               <SettingsIcon />
