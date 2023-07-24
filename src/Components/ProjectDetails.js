@@ -1,16 +1,22 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const ProjectEditForm = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const { projectId } = useParams();
 
-  // You can use the projectId to fetch the project details and populate the form fields if needed.
-  // For simplicity, we'll use an empty project object here.
+  // Fake data for the dropdowns
+  const planOptions = ['Plan A', 'Plan B', 'Plan C'];
+  const modelOptions = ['Model X', 'Model Y', 'Model Z'];
+  const parameterOptions = ['Parameter 1', 'Parameter 2', 'Parameter 3'];
+
   const initialProject = {
     name: '',
     description: '',
+    selectedPlan: '',
+    selectedModel: '',
+    selectedParameter: '',
   };
 
   const [project, setProject] = React.useState(initialProject);
@@ -27,7 +33,7 @@ const ProjectEditForm = () => {
     e.preventDefault();
     // Handle the form submission here (e.g., update the project details and navigate back to the map page)
     console.log('Updated Project:', project);
-    history.push('/');
+    navigate('/');
   };
 
   return (
@@ -53,6 +59,48 @@ const ProjectEditForm = () => {
           required
           margin="normal"
         />
+        <FormControl fullWidth margin="normal" required>
+          <InputLabel>Select Plan</InputLabel>
+          <Select
+            name="selectedPlan"
+            value={project.selectedPlan}
+            onChange={handleInputChange}
+          >
+            {planOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth margin="normal" required>
+          <InputLabel>Select Model</InputLabel>
+          <Select
+            name="selectedModel"
+            value={project.selectedModel}
+            onChange={handleInputChange}
+          >
+            {modelOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth margin="normal" required>
+          <InputLabel>Select Parameters</InputLabel>
+          <Select
+            name="selectedParameter"
+            value={project.selectedParameter}
+            onChange={handleInputChange}
+          >
+            {parameterOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Button type="submit" variant="contained" color="primary" style={{ marginTop: '10px' }}>
           Save
         </Button>
