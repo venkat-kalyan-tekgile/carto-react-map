@@ -29,6 +29,11 @@ const ProjectEditForm = () => {
     }));
   };
 
+  const handleBackClick = () => {
+   
+    navigate('/');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -38,6 +43,9 @@ const ProjectEditForm = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      <Button onClick={handleBackClick} variant="contained" style={{ marginBottom: '10px' }}>
+        Back
+      </Button>
       <h2>Edit Project</h2>
       <form onSubmit={handleSubmit}>
         <TextField
