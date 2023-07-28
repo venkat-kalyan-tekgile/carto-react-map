@@ -10,13 +10,14 @@ import ProjectList from './ProjectList';
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 
 const MapComponent = ({ showProjectList }) => {
-
   const mapContainerRef = useRef(null);
   const drawRef = useRef(null);
   const smallMapRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBasemap, setSelectedBasemap] = useState('streets-v11'); // Default basemap
 
   const latitude = 40.7128;
+
   const longitude = -74.0060;
 
   const center = [longitude, latitude];
@@ -28,11 +29,18 @@ const MapComponent = ({ showProjectList }) => {
     { id: 3, name: 'Project 3' },
   ];
 
+
+  const basemaps = [
+    { id: 'streets-v11', name: 'Streets', image: '/path-to-streets-image.png' },
+    { id: 'satellite-v9', name: 'Satellite', image: '/path-to-satellite-image.png' },
+    // Add more basemaps as needed
+  ];
+
   // Add a function to create a small map
   const createSmallMap = () => {
     return new mapboxgl.Map({
       container: smallMapRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: `mapbox://styles/mapbox/${selectedBasemap}`, // Use the selected basemap
       center: center,
       zoom: 10,
       interactive: false, // Disable interactions on the small map
@@ -42,7 +50,7 @@ const MapComponent = ({ showProjectList }) => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: `mapbox://styles/mapbox/${selectedBasemap}`, // Use the selected basemap
       center: center,
       zoom: 13,
     });
@@ -75,7 +83,7 @@ const MapComponent = ({ showProjectList }) => {
         smallMapRef.current.remove();
       }
     };
-  }, [center]);
+  }, [center, selectedBasemap]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -90,11 +98,10 @@ const MapComponent = ({ showProjectList }) => {
         if (smallMap) smallMap.remove();
       };
     }
-  }, [isLoading]);
+  }, [isLoading, selectedBasemap]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-     
       {/* {showProjectList && (
           <Navbar username={username} /> 
         )} */}
@@ -122,9 +129,52 @@ const MapComponent = ({ showProjectList }) => {
             <CircularProgress />
           </div>
         )}
-        <div ref={mapContainerRef} style={{ flex: '1', position: 'relative' }}></div>
+        <div ref={mapContainerRef} style={{ flex: '1', position: 'relative' }}>
+          {/* Add a div for the basemap selection dropdown */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              padding: '10px',
+              backgroundColor: '#fff',
+              borderRadius: '4px',
+              zIndex: 1,
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <span style={{ marginRight: '10px' }}>Select Basemap:</span>
+            <select
+              value={selectedBasemap}
+              onChange={(e) => setSelectedBasemap(e.target.value)}
+              style={{
+                padding: '5px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+              }}
+            >
+              {basemaps.map((basemap) => (
+                <option key={basemap.id} value={basemap.id}>
+                  {basemap.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         {/* Add a div for the small map */}
-        <div ref={smallMapRef} style={{ position: 'absolute', bottom: '10px', right: '10px', width: '200px', height: '200px', border: '1px solid #ccc' }}></div>
+        <div
+          ref={smallMapRef}
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            right: '10px',
+            width: '200px',
+            height: '200px',
+            border: '1px solid #ccc',
+          }}
+        ></div>
       </div>
     </div>
   );
