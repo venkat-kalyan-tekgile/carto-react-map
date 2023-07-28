@@ -1,3 +1,5 @@
+
+
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -7,6 +9,8 @@ import Navbar from './Navbar';
 import { CircularProgress } from '@mui/material';
 import ProjectList from './ProjectList';
 
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 
 const MapComponent = ({ showProjectList }) => {
@@ -14,7 +18,7 @@ const MapComponent = ({ showProjectList }) => {
   const drawRef = useRef(null);
   const smallMapRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedBasemap, setSelectedBasemap] = useState('streets-v11'); // Default basemap
+  const [selectedBasemap, setSelectedBasemap] = useState('streets-v11');
 
   const latitude = 40.7128;
 
@@ -36,14 +40,13 @@ const MapComponent = ({ showProjectList }) => {
     // Add more basemaps as needed
   ];
 
-  // Add a function to create a small map
   const createSmallMap = () => {
     return new mapboxgl.Map({
       container: smallMapRef.current,
       style: `mapbox://styles/mapbox/${selectedBasemap}`, // Use the selected basemap
       center: center,
       zoom: 10,
-      interactive: false, // Disable interactions on the small map
+      interactive: false, 
     });
   };
 
