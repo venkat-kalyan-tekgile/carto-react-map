@@ -87,13 +87,9 @@ const MapComponent = ({ showProjectList }) => {
 
   useEffect(() => {
     if (!isLoading) {
-      // Create the small map when the main map is loaded
+      
       const smallMap = createSmallMap();
 
-      // Optionally, you can add some markers or other layers to the small map
-      // to indicate different areas of interest for each tab.
-
-      // Clean up the small map when this component is unmounted
       return () => {
         if (smallMap) smallMap.remove();
       };
