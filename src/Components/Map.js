@@ -7,7 +7,7 @@ import Navbar from './Navbar';
 import { CircularProgress } from '@mui/material';
 import ProjectList from './ProjectList';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsaDVyeDV2ZTJhcXczZ3F2a3hkajc3MjIifQ.TTwoxgxSMDeHtVdbvZ6hLA';
+mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 
 const MapComponent = ({ showProjectList }) => {
 
