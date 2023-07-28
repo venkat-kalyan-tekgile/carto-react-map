@@ -94,7 +94,10 @@ const MapComponent = ({ showProjectList }) => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <Navbar username={username} />
+     
+      {/* {showProjectList && (
+          <Navbar username={username} /> 
+        )} */}
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
         {showProjectList && (
           <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
