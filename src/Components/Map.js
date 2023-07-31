@@ -461,59 +461,7 @@ const MapComponent = ({ showProjectList }) => {
     // Add more basemaps as needed
   ];
 
-  // const createSmallMap = () => {
-  //   return new mapboxgl.Map({
-  //     container: smallMapRef.current,
-  //     style: `mapbox://styles/mapbox/${selectedBasemap}`, // Use the selected basemap
-  //     center: center,
-  //     zoom: 10,
-  //     interactive: false, 
-  //   });
-  // };
 
-  // const addCartoLayer = (map) => {
-  //   // CARTO Credentials
-  //   const CARTO_USERNAME = 'attainutbs@gmail.com';
-  //   const CARTO_APIKEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhIjoiYWNfMWg2eGQxc2MiLCJqdGkiOiIwNDcxMjlkYiJ9.qdrpqYggDrYqaO1Oher5_lQn1pYy8TYdywexIm8cCGg'; // You need an API key for your CARTO account
-  //   const CARTO_DATASET = 'cell_towers_worldwide';
-
-  //   const sqlQuery = `SELECT * FROM ${CARTO_DATASET}`;
-  //   const url = `https://${CARTO_USERNAME}.carto.com/api/v3/sql?q=${encodeURIComponent(sqlQuery)}&api_key=${CARTO_APIKEY}`;
-
-  //   fetch(url)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const geoJSONData = {
-  //         type: 'FeatureCollection',
-  //         features: data.rows.map((row) => ({
-  //           type: 'Feature',
-  //           geometry: JSON.parse(row.the_geom),
-  //           properties: { ...row },
-  //         })),
-  //       };
-
-  //       map.addSource('carto-layer-source', {
-  //         type: 'geojson',
-  //         data: geoJSONData,
-  //       });
-
-  //       map.addLayer({
-  //         id: 'carto-layer',
-  //         type: 'circle',
-  //         source: 'carto-layer-source',
-  //         paint: {
-  //           'circle-radius': 5,
-  //           'circle-color': 'red',
-  //         },
-  //       });
-
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data from CARTO:', error);
-  //       setIsLoading(false);
-  //     });
-  // };
 
   const addCartoLayer = (map) => {
         const CARTO_USERNAME = 'attainutbs@gmail.com';
@@ -605,21 +553,11 @@ const MapComponent = ({ showProjectList }) => {
     };
   }, [center, selectedBasemap]);
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     const smallMap = createSmallMap();
-
-  //     return () => {
-  //       if (smallMap) smallMap.remove();
-  //     };
-  //   }
-  // }, [isLoading, selectedBasemap]);
+  
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      {/* {showProjectList && (
-          <Navbar username={username} /> 
-        )} */}
+      
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
         {showProjectList && (
           <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
