@@ -31,9 +31,9 @@ const MapTabs = () => {
       {activeTab === 1 && (
         <div>
           <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-            <InputLabel htmlFor="current-plan">Select Plan</InputLabel>
+            <InputLabel htmlFor="current-plan">Select Model</InputLabel>
             <Select
-              label="Select Plan"
+              label="Select Model"
               value={''} // Set the selected value here and handle onChange event
               onChange={() => {}}
               inputProps={{
@@ -50,7 +50,7 @@ const MapTabs = () => {
               {/* Add more plan options as needed */}
             </Select>
           </FormControl>
-          <p>Text below the Select Plan dropdown for Plan 1 tab.</p>
+          <p>Text below the Select Model dropdown for Plan 1 tab.</p>
         </div>
       )}
 
@@ -58,9 +58,9 @@ const MapTabs = () => {
       {activeTab === 2 && (
         <div>
           <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-            <InputLabel htmlFor="comparison-plan">Select Plan</InputLabel>
+            <InputLabel htmlFor="comparison-plan">Select Model</InputLabel>
             <Select
-              label="Select Plan"
+              label="Select Model"
               value={''} // Set the selected value here and handle onChange event
               onChange={() => {}}
               inputProps={{
@@ -77,16 +77,16 @@ const MapTabs = () => {
               {/* Add more plan options as needed */}
             </Select>
           </FormControl>
-          <p>Text below the Select Plan dropdown for Plan 2 tab.</p>
+          <p>Text below the Select Model dropdown for Plan 2 tab.</p>
         </div>
       )}
 
 {activeTab === 3 && (
         <div>
           <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-            <InputLabel htmlFor="comparison-plan">Select Plan</InputLabel>
+            <InputLabel htmlFor="comparison-plan">Select Model</InputLabel>
             <Select
-              label="Select Plan"
+              label="Select Model"
               value={''} // Set the selected value here and handle onChange event
               onChange={() => {}}
               inputProps={{
@@ -103,7 +103,7 @@ const MapTabs = () => {
               {/* Add more plan options as needed */}
             </Select>
           </FormControl>
-          <p>Text below the Select Plan dropdown for Plan 3 tab.</p>
+          <p>Text below the Select Model dropdown for Plan 3 tab.</p>
         </div>
       )}
     </div>
