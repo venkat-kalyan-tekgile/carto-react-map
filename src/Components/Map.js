@@ -464,7 +464,7 @@ const MapComponent = ({ showProjectList }) => {
 
 
   const addCartoLayer = (map) => {
-        const CARTO_USERNAME = 'attainutbs@gmail.com';
+    const CARTO_USERNAME = 'attainutbs@gmail.com';
     const CARTO_APIKEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhIjoiYWNfMWg2eGQxc2MiLCJqdGkiOiIwNDcxMjlkYiJ9.qdrpqYggDrYqaO1Oher5_lQn1pYy8TYdywexIm8cCGg'; // You need an API key for your CARTO account
     const CARTO_DATASET = 'cell_towers_worldwide';
 
