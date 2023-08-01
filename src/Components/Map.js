@@ -513,7 +513,7 @@ const MapComponent = ({ showProjectList }) => {
     return () => {
       map.remove();
     };
-  }, [ selectedBasemap, drawEnabled]);
+  }, [selectedBasemap, drawEnabled]);
 
   const handleFormClose = () => {
     setIsFormOpen(false);
