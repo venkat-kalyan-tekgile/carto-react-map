@@ -431,7 +431,17 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
-import { CircularProgress } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Button,
+} from '@mui/material';
 import ProjectList from './ProjectList';
 import axios from 'axios';
 import { useMapContext } from './MapContext';
@@ -442,10 +452,12 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzc
 const MapComponent = ({ showProjectList }) => {
   const mapContainerRef = useRef(null);
   const drawRef = useRef(null);
-  // const smallMapRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBasemap, setSelectedBasemap] = useState('streets-v11');
   const { drawEnabled } = useMapContext();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedPolygon, setSelectedPolygon] = useState(null);
 
   const latitude = 40.7128;
   const longitude = -74.0060;
@@ -463,10 +475,6 @@ const MapComponent = ({ showProjectList }) => {
     { id: 'satellite-v9', name: 'Satellite', image: '/path-to-satellite-image.png' },
     // Add more basemaps as needed
   ];
-
-
-
-  
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -490,6 +498,9 @@ const MapComponent = ({ showProjectList }) => {
 
     map.on('draw.create', (e) => {
       console.log('Feature created:', e.features);
+      const newFeature = e.features[0];
+      setIsFormOpen(true);
+      setSelectedPolygon(newFeature);
     });
 
     map.on('load', () => {
@@ -501,17 +512,72 @@ const MapComponent = ({ showProjectList }) => {
 
     return () => {
       map.remove();
-      // if (smallMapRef.current) {
-      //   smallMapRef.current.remove();
-      // }
     };
-  }, [center, selectedBasemap, drawEnabled]);
+  }, [ selectedBasemap, drawEnabled]);
 
-  
+  const handleFormClose = () => {
+    setIsFormOpen(false);
+    setSelectedOption('');
+  };
+
+  const handleFormSubmit = () => {
+    // Update the polygon color based on the selected option
+    let fillColor;
+    switch (selectedOption) {
+      case 'tree':
+        fillColor = 'green';
+        break;
+      case 'water':
+        fillColor = 'blue';
+        break;
+      case 'grassland':
+        fillColor = 'darkgreen';
+        break;
+      default:
+        fillColor = 'gray'; // Default color if no option is selected
+    }
+
+    if (selectedPolygon) {
+      const updatedPolygon = { ...selectedPolygon };
+      updatedPolygon.properties = {
+        ...updatedPolygon.properties,
+        fillColor: fillColor,
+      };
+
+      const draw = drawRef.current;
+      draw.delete(selectedPolygon.id);
+      draw.add(updatedPolygon);
+
+      setSelectedPolygon(updatedPolygon);
+    }
+
+    setIsFormOpen(false);
+    setSelectedOption('');
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      
+      <Dialog open={isFormOpen} onClose={handleFormClose}>
+        <DialogContent>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Select an option:</FormLabel>
+            <RadioGroup
+              aria-label="option"
+              name="option"
+              value={selectedOption}
+              onChange={(e) => setSelectedOption(e.target.value)}
+            >
+              <FormControlLabel value="tree" control={<Radio />} label="Tree Cover" />
+              <FormControlLabel value="water" control={<Radio />} label="Open Water" />
+              <FormControlLabel value="grassland" control={<Radio />} label="Grassland" />
+            </RadioGroup>
+            <Button variant="contained" color="primary" onClick={handleFormSubmit}>
+              Submit
+            </Button>
+          </FormControl>
+        </DialogContent>
+      </Dialog>
+
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
         {showProjectList && (
           <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
@@ -570,8 +636,8 @@ const MapComponent = ({ showProjectList }) => {
             </select>
           </div>
         </div>
-              {/* Add a div for the small map */}
-              <div
+        {/* Add a div for the small map */}
+        <div
           // ref={smallMapRef}
           style={{
             position: 'absolute',
@@ -588,6 +654,10 @@ const MapComponent = ({ showProjectList }) => {
 };
 
 export default MapComponent;
+
+
+
+
 
 
 
