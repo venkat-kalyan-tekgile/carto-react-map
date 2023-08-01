@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import MapComponent from './Map';
+
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { useMapContext } from './MapContext';
 
 const MapTabs = () => {
+  const { setDrawEnabled } = useMapContext();
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
+    // Enable draw tools for all tabs
+    setDrawEnabled(true);
   };
 
   return (
@@ -81,7 +85,7 @@ const MapTabs = () => {
         </div>
       )}
 
-{activeTab === 3 && (
+      {activeTab === 3 && (
         <div>
           <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
             <InputLabel htmlFor="comparison-plan">Select Model</InputLabel>

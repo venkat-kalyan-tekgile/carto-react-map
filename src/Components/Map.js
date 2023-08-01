@@ -430,10 +430,11 @@ import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import Navbar from './Navbar';
+
 import { CircularProgress } from '@mui/material';
 import ProjectList from './ProjectList';
 import axios from 'axios';
+import { useMapContext } from './MapContext';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 
@@ -443,6 +444,7 @@ const MapComponent = ({ showProjectList }) => {
   // const smallMapRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBasemap, setSelectedBasemap] = useState('streets-v11');
+  const { drawEnabled } = useMapContext();
 
   const latitude = 40.7128;
   const longitude = -74.0060;
@@ -525,10 +527,10 @@ const MapComponent = ({ showProjectList }) => {
     const draw = new MapboxDraw({
       displayControlsDefault: false,
       controls: {
-        point: true,
-        line_string: true,
-        polygon: true,
-        trash: true,
+        point: drawEnabled,
+        line_string: drawEnabled,
+        polygon: drawEnabled,
+        trash: drawEnabled,
       },
     });
 
@@ -551,7 +553,7 @@ const MapComponent = ({ showProjectList }) => {
       //   smallMapRef.current.remove();
       // }
     };
-  }, [center, selectedBasemap]);
+  }, [center, selectedBasemap, drawEnabled]);
 
   
 
