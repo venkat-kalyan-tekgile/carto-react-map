@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@carto/react": "^1.0.0-beta14",
     "@carto/react-api": "^2.2.2",
     "@carto/react-basemaps": "^2.2.2",
     "@carto/react-core": "^2.2.2",
