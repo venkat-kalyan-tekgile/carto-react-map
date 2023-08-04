@@ -273,11 +273,11 @@ const MapComponent = ({ showProjectList }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedPolygon, setSelectedPolygon] = useState(null);
   const [isDeckGLLoaded, setIsDeckGLLoaded] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   const latitude = 40.7128;
   const longitude = -74.0060;
   const center = [longitude, latitude];
-  const username = 'Venkat';
 
   const projects = [
     { id: 1, name: 'Project 1' },
@@ -298,7 +298,22 @@ const MapComponent = ({ showProjectList }) => {
     [-74.25559, 40.91553],
     [-74.25559, 40.49612],
   ];
-
+  // const newYorkCityBoundary = [
+  //   [-73.7989, 40.6413],
+  //   [-73.7902, 40.6449],
+  //   [-73.7831, 40.6468],
+  //   [-73.7783, 40.6462],
+  //   [-73.7776, 40.6437],
+  //   [-73.7802, 40.6406],
+  //   [-73.7834, 40.6386],
+  //   [-73.7888, 40.6363],
+  //   [-73.7949, 40.6354],
+  //   [-73.7978, 40.6360],
+  //   [-73.8000, 40.6377],
+  //   [-73.8012, 40.6393],
+  //   [-73.8008, 40.6408],
+  //   [-73.7989, 40.6413]
+  // ];
   // Step 3: Fake Carto data
   const cartoData = {
     type: 'FeatureCollection',
@@ -359,7 +374,7 @@ const MapComponent = ({ showProjectList }) => {
     map.addControl(draw);
 
     map.on('load', () => {
-      setIsLoading(false); // Set isLoading to false after the map is fully loaded
+      setIsMapLoaded(true);
     });
 
     map.on('draw.create', (e) => {
@@ -375,6 +390,10 @@ const MapComponent = ({ showProjectList }) => {
       map.remove();
     };
   }, [selectedBasemap, drawEnabled]);
+
+  useEffect(() => {
+    setIsLoading(!isMapLoaded || !isDeckGLLoaded);
+  }, [isMapLoaded, isDeckGLLoaded]);
 
   // Handler for DeckGL's onLoad event
   const handleDeckGLLoad = () => {
@@ -450,7 +469,7 @@ const MapComponent = ({ showProjectList }) => {
             <ProjectList projects={projects} />
           </div>
         )}
-        {isLoading && !isDeckGLLoaded && (
+        {isLoading && (
           <div
             style={{
               position: 'absolute',
@@ -539,6 +558,7 @@ const MapComponent = ({ showProjectList }) => {
 };
 
 export default MapComponent;
+
 
 
 
