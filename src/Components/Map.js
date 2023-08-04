@@ -487,3 +487,34 @@ export default MapComponent;
 
 
 
+{/* <DeckGL
+        initialViewState={{
+          longitude,
+          latitude,
+          zoom: 13,
+          pitch: 0,
+          bearing: 0,
+          // Add the Mapbox access token here
+          accessToken: mapboxgl.accessToken,
+        }}
+        controller={true}
+        layers={[
+          // Add CartoLayer with the correct connection object
+          new CartoLayer({
+            id: 'carto-layer',
+            type: MAP_TYPES.TILESET,
+            data: 'SELECT * FROM your_carto_table_name',
+            connection: {
+              apiKey: 'YOUR_CARTO_API_KEY',
+              username: 'your_carto_username',
+            },
+            getFillColor: [255, 0, 0, 100],
+            pointRadiusMinPixels: 2,
+            pointRadiusMaxPixels: 5,
+            autoHighlight: true,
+            highlightColor: [0, 0, 128, 128],
+            pickable: true,
+          }),
+          // Add other layers if needed...
+        ]}
+      ></DeckGL> */}
