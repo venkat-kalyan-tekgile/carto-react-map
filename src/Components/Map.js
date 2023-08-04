@@ -298,17 +298,17 @@ const MapComponent = ({ showProjectList }) => {
     [-74.25559, 40.49612],
   ];
 
-  // Step 3: Fake Carto data
+  
   const cartoData = {
     type: 'FeatureCollection',
     features: [
-      // Existing fake Carto polygon
+     
       {
         type: 'Feature',
         properties: {
           id: 1,
           name: 'Fake Carto Polygon',
-          fillColor: [255, 0, 0], // <-- Set the initial fill color here (Red)
+          fillColor: [255, 0, 0], 
         },
         geometry: {
           type: 'Polygon',
@@ -362,10 +362,10 @@ const MapComponent = ({ showProjectList }) => {
     map.on('load', () => {
       setIsMapLoaded(true);
 
-      // Add the Carto layer to the map after it is loaded
+
       addCartoLayerToMap(map, cartoData);
 
-      // Update the fill color for the Carto layer after the map loads
+   
       cartoData.features.forEach((feature) => {
         const { id, fillColor } = feature.properties;
         map.setFeatureState(
@@ -415,7 +415,7 @@ const MapComponent = ({ showProjectList }) => {
     });
   };
 
-  // Handler for DeckGL's onLoad event
+ 
   const handleDeckGLLoad = () => {
     setIsDeckGLLoaded(true);
   };
@@ -426,7 +426,7 @@ const MapComponent = ({ showProjectList }) => {
   };
 
   const handleFormSubmit = () => {
-    // Update the polygon color based on the selected option
+    
     let fillColor;
     switch (selectedOption) {
       case 'tree':
@@ -439,7 +439,7 @@ const MapComponent = ({ showProjectList }) => {
         fillColor = [0, 128, 0]; // Dark green
         break;
       default:
-        fillColor = [128, 128, 128]; // Default color if no option is selected (Gray)
+        fillColor = [128, 128, 128]; 
     }
 
     if (selectedPolygon) {
@@ -514,9 +514,9 @@ const MapComponent = ({ showProjectList }) => {
               longitude: -74.0060,
               zoom: 13,
             }}
-            layers={[]} // Remove GeoJsonLayer
+            layers={[]} 
             controller={true}
-            onLoad={handleDeckGLLoad} // Handle DeckGL's onLoad event
+            onLoad={handleDeckGLLoad} 
           />
           <div
             style={{
