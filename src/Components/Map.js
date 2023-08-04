@@ -258,7 +258,6 @@ import { CircularProgress, Dialog, DialogContent, Radio, RadioGroup, FormControl
 import ProjectList from './ProjectList';
 import axios from 'axios';
 import { useMapContext } from './MapContext';
-import { GeoJsonLayer } from '@deck.gl/layers';
 import DeckGL from '@deck.gl/react';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
@@ -298,22 +297,7 @@ const MapComponent = ({ showProjectList }) => {
     [-74.25559, 40.91553],
     [-74.25559, 40.49612],
   ];
-  // const newYorkCityBoundary = [
-  //   [-73.7989, 40.6413],
-  //   [-73.7902, 40.6449],
-  //   [-73.7831, 40.6468],
-  //   [-73.7783, 40.6462],
-  //   [-73.7776, 40.6437],
-  //   [-73.7802, 40.6406],
-  //   [-73.7834, 40.6386],
-  //   [-73.7888, 40.6363],
-  //   [-73.7949, 40.6354],
-  //   [-73.7978, 40.6360],
-  //   [-73.8000, 40.6377],
-  //   [-73.8012, 40.6393],
-  //   [-73.8008, 40.6408],
-  //   [-73.7989, 40.6413]
-  // ];
+
   // Step 3: Fake Carto data
   const cartoData = {
     type: 'FeatureCollection',
@@ -324,6 +308,7 @@ const MapComponent = ({ showProjectList }) => {
         properties: {
           id: 1,
           name: 'Fake Carto Polygon',
+          fillColor: [255, 0, 0], // <-- Set the initial fill color here (Red)
         },
         geometry: {
           type: 'Polygon',
@@ -344,6 +329,7 @@ const MapComponent = ({ showProjectList }) => {
         properties: {
           id: 2,
           name: 'New York City Boundary',
+          fillColor: [255, 0, 0], // <-- Set the initial fill color here (Red)
         },
         geometry: {
           type: 'Polygon',
@@ -375,6 +361,18 @@ const MapComponent = ({ showProjectList }) => {
 
     map.on('load', () => {
       setIsMapLoaded(true);
+
+      // Add the Carto layer to the map after it is loaded
+      addCartoLayerToMap(map, cartoData);
+
+      // Update the fill color for the Carto layer after the map loads
+      cartoData.features.forEach((feature) => {
+        const { id, fillColor } = feature.properties;
+        map.setFeatureState(
+          { source: 'carto-data', id: id },
+          { fillColor: fillColor }
+        );
+      });
     });
 
     map.on('draw.create', (e) => {
@@ -394,6 +392,28 @@ const MapComponent = ({ showProjectList }) => {
   useEffect(() => {
     setIsLoading(!isMapLoaded || !isDeckGLLoaded);
   }, [isMapLoaded, isDeckGLLoaded]);
+
+  const addCartoLayerToMap = (map, data) => {
+    if (map.getSource('carto-data')) {
+      map.removeLayer('carto-layer');
+      map.removeSource('carto-data');
+    }
+
+    map.addSource('carto-data', {
+      type: 'geojson',
+      data: data,
+    });
+
+    map.addLayer({
+      id: 'carto-layer',
+      type: 'fill',
+      source: 'carto-data',
+      paint: {
+        'fill-color': ['get', 'fillColor'], // <-- Use the fillColor property from cartoData
+        'fill-opacity': 0.8,
+      },
+    });
+  };
 
   // Handler for DeckGL's onLoad event
   const handleDeckGLLoad = () => {
@@ -494,17 +514,7 @@ const MapComponent = ({ showProjectList }) => {
               longitude: -74.0060,
               zoom: 13,
             }}
-            layers={[
-              new GeoJsonLayer({
-                id: 'carto-layer',
-                data: cartoData,
-                filled: true,
-                stroked: false,
-                getFillColor: [255, 0, 0], // Red fill color for the Carto layer
-                getLineColor: [0, 0, 0], // Black stroke color for the Carto layer
-                lineWidthMinPixels: 2,
-              }),
-            ]}
+            layers={[]} // Remove GeoJsonLayer
             controller={true}
             onLoad={handleDeckGLLoad} // Handle DeckGL's onLoad event
           />
@@ -558,6 +568,9 @@ const MapComponent = ({ showProjectList }) => {
 };
 
 export default MapComponent;
+
+
+
 
 
 
