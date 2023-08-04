@@ -254,22 +254,12 @@ import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-
-import {
-  CircularProgress,
-  Dialog,
-  DialogContent,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Button,
-} from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button } from '@mui/material';
 import ProjectList from './ProjectList';
 import axios from 'axios';
 import { useMapContext } from './MapContext';
-import { addCartoLayer } from '../utils/carto';
+import { GeoJsonLayer } from '@deck.gl/layers';
+import DeckGL from '@deck.gl/react';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 
@@ -282,6 +272,7 @@ const MapComponent = ({ showProjectList }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedPolygon, setSelectedPolygon] = useState(null);
+  const [isDeckGLLoaded, setIsDeckGLLoaded] = useState(false);
 
   const latitude = 40.7128;
   const longitude = -74.0060;
@@ -300,12 +291,59 @@ const MapComponent = ({ showProjectList }) => {
     // Add more basemaps as needed
   ];
 
+  const newYorkCityBoundary = [
+    [-74.25559, 40.49612],
+    [-73.70001, 40.49612],
+    [-73.70001, 40.91553],
+    [-74.25559, 40.91553],
+    [-74.25559, 40.49612],
+  ];
+
+  // Step 3: Fake Carto data
+  const cartoData = {
+    type: 'FeatureCollection',
+    features: [
+      // Existing fake Carto polygon
+      {
+        type: 'Feature',
+        properties: {
+          id: 1,
+          name: 'Fake Carto Polygon',
+        },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [-74.0059, 40.7128],
+              [-74.0069, 40.7128],
+              [-74.0069, 40.7138],
+              [-74.0059, 40.7138],
+              [-74.0059, 40.7128],
+            ],
+          ],
+        },
+      },
+      // New polygon covering the extent of New York City
+      {
+        type: 'Feature',
+        properties: {
+          id: 2,
+          name: 'New York City Boundary',
+        },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [newYorkCityBoundary],
+        },
+      },
+    ],
+  };
+
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: `mapbox://styles/mapbox/${selectedBasemap}`, // Use the selected basemap
+      style: `mapbox://styles/mapbox/${selectedBasemap}`,
       center: center,
-      zoom: 13,
+      zoom: 7,
     });
 
     const draw = new MapboxDraw({
@@ -320,16 +358,15 @@ const MapComponent = ({ showProjectList }) => {
 
     map.addControl(draw);
 
+    map.on('load', () => {
+      setIsLoading(false); // Set isLoading to false after the map is fully loaded
+    });
+
     map.on('draw.create', (e) => {
       console.log('Feature created:', e.features);
       const newFeature = e.features[0];
       setIsFormOpen(true);
       setSelectedPolygon(newFeature);
-    });
-
-    map.on('load', () => {
-      // Call the function to add the CARTO layer
-      addCartoLayer(map, setIsLoading);
     });
 
     drawRef.current = draw;
@@ -338,6 +375,11 @@ const MapComponent = ({ showProjectList }) => {
       map.remove();
     };
   }, [selectedBasemap, drawEnabled]);
+
+  // Handler for DeckGL's onLoad event
+  const handleDeckGLLoad = () => {
+    setIsDeckGLLoaded(true);
+  };
 
   const handleFormClose = () => {
     setIsFormOpen(false);
@@ -349,16 +391,16 @@ const MapComponent = ({ showProjectList }) => {
     let fillColor;
     switch (selectedOption) {
       case 'tree':
-        fillColor = 'green';
+        fillColor = [0, 255, 0]; // Green
         break;
       case 'water':
-        fillColor = 'blue';
+        fillColor = [0, 0, 255]; // Blue
         break;
       case 'grassland':
-        fillColor = 'darkgreen';
+        fillColor = [0, 128, 0]; // Dark green
         break;
       default:
-        fillColor = 'gray'; // Default color if no option is selected
+        fillColor = [128, 128, 128]; // Default color if no option is selected (Gray)
     }
 
     if (selectedPolygon) {
@@ -408,7 +450,7 @@ const MapComponent = ({ showProjectList }) => {
             <ProjectList projects={projects} />
           </div>
         )}
-        {isLoading && (
+        {isLoading && !isDeckGLLoaded && (
           <div
             style={{
               position: 'absolute',
@@ -427,7 +469,26 @@ const MapComponent = ({ showProjectList }) => {
           </div>
         )}
         <div ref={mapContainerRef} style={{ flex: '1', position: 'relative' }}>
-          {/* Add a div for the basemap selection dropdown */}
+          <DeckGL
+            viewState={{
+              latitude: 40.7128,
+              longitude: -74.0060,
+              zoom: 13,
+            }}
+            layers={[
+              new GeoJsonLayer({
+                id: 'carto-layer',
+                data: cartoData,
+                filled: true,
+                stroked: false,
+                getFillColor: [255, 0, 0], // Red fill color for the Carto layer
+                getLineColor: [0, 0, 0], // Black stroke color for the Carto layer
+                lineWidthMinPixels: 2,
+              }),
+            ]}
+            controller={true}
+            onLoad={handleDeckGLLoad} // Handle DeckGL's onLoad event
+          />
           <div
             style={{
               position: 'absolute',
@@ -478,6 +539,8 @@ const MapComponent = ({ showProjectList }) => {
 };
 
 export default MapComponent;
+
+
 
 
 
