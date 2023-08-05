@@ -298,46 +298,44 @@ const MapComponent = ({ showProjectList }) => {
     [-74.25559, 40.49612],
   ];
 
-  
-  const cartoData = {
-    type: 'FeatureCollection',
-    features: [
-     
-      {
-        type: 'Feature',
-        properties: {
-          id: 1,
-          name: 'Fake Carto Polygon',
-          fillColor: [255, 0, 0], 
-        },
-        geometry: {
-          type: 'Polygon',
-          coordinates: [
-            [
-              [-74.0059, 40.7128],
-              [-74.0069, 40.7128],
-              [-74.0069, 40.7138],
-              [-74.0059, 40.7138],
-              [-74.0059, 40.7128],
-            ],
-          ],
-        },
-      },
-      // New polygon covering the extent of New York City
-      {
-        type: 'Feature',
-        properties: {
-          id: 2,
-          name: 'New York City Boundary',
-          fillColor: [255, 0, 0], // <-- Set the initial fill color here (Red)
-        },
-        geometry: {
-          type: 'Polygon',
-          coordinates: [newYorkCityBoundary],
-        },
-      },
-    ],
-  };
+  const [cartoData, setCartoData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          'https://gcp-us-east1.api.carto.com/v3/sql/carto_dw/query?q=select * from carto-demo-data.demo_tilesets.covid19_vaccinated_usa_tileset',
+          {
+            headers: {
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhIjoiYWNfMWg2eGQxc2MiLCJqdGkiOiIwNDcxMjlkYiJ9.qdrpqYggDrYqaO1Oher5_lQn1pYy8TYdywexIm8cCGg'
+              // 'Cache-Control': 'max-age=300',
+            },
+          }
+        );
+
+        const features = response.data.rows.map((row) => ({
+          type: 'Feature',
+          properties: {
+            id: row.cartodb_id,
+            name: row.name,
+            fillColor: [255, 0, 0], // Set the initial fill color here (Red)
+          },
+          geometry: JSON.parse(row.the_geom),
+        }));
+
+        console.log('carto', response.data)
+
+        setCartoData({
+          type: 'FeatureCollection',
+          features: features,
+        });
+      } catch (error) {
+        console.log('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -362,17 +360,17 @@ const MapComponent = ({ showProjectList }) => {
     map.on('load', () => {
       setIsMapLoaded(true);
 
+      if (cartoData) {
+        addCartoLayerToMap(map, cartoData);
 
-      addCartoLayerToMap(map, cartoData);
-
-   
-      cartoData.features.forEach((feature) => {
-        const { id, fillColor } = feature.properties;
-        map.setFeatureState(
-          { source: 'carto-data', id: id },
-          { fillColor: fillColor }
-        );
-      });
+        cartoData.features.forEach((feature) => {
+          const { id, fillColor } = feature.properties;
+          map.setFeatureState(
+            { source: 'carto-data', id: id },
+            { fillColor: fillColor }
+          );
+        });
+      }
     });
 
     map.on('draw.create', (e) => {
@@ -387,7 +385,7 @@ const MapComponent = ({ showProjectList }) => {
     return () => {
       map.remove();
     };
-  }, [selectedBasemap, drawEnabled]);
+  }, [selectedBasemap, drawEnabled, cartoData]);
 
   useEffect(() => {
     setIsLoading(!isMapLoaded || !isDeckGLLoaded);
@@ -409,13 +407,12 @@ const MapComponent = ({ showProjectList }) => {
       type: 'fill',
       source: 'carto-data',
       paint: {
-        'fill-color': ['get', 'fillColor'], // <-- Use the fillColor property from cartoData
+        'fill-color': ['get', 'fillColor'], // Use the fillColor property from cartoData
         'fill-opacity': 0.8,
       },
     });
   };
 
- 
   const handleDeckGLLoad = () => {
     setIsDeckGLLoaded(true);
   };
@@ -426,7 +423,6 @@ const MapComponent = ({ showProjectList }) => {
   };
 
   const handleFormSubmit = () => {
-    
     let fillColor;
     switch (selectedOption) {
       case 'tree':
@@ -439,7 +435,7 @@ const MapComponent = ({ showProjectList }) => {
         fillColor = [0, 128, 0]; // Dark green
         break;
       default:
-        fillColor = [128, 128, 128]; 
+        fillColor = [128, 128, 128];
     }
 
     if (selectedPolygon) {
@@ -568,6 +564,7 @@ const MapComponent = ({ showProjectList }) => {
 };
 
 export default MapComponent;
+
 
 
 
