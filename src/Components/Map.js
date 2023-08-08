@@ -283,7 +283,7 @@ const MapComponent = ({ showProjectList }) => {
 
   const latitude = 40.7128;
   const longitude = -74.0060;
-  const center = [139.839478, 35.682839];
+  const center = [139.7670395118941, 35.68334155120243];
 
   
 

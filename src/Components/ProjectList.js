@@ -29,14 +29,14 @@ const ProjectList = ({ projects }) => {
         <Divider />
       </Grid>
       {projects.map((project, index) => (
-        <React.Fragment key={project.id}>
+        <React.Fragment key={project.cartodb_id}>
           <Grid item xs={12}>
             <ListItem
-              onDoubleClick={() => handleDoubleClick(project.id)}
+              onDoubleClick={() => handleDoubleClick(project.cartodb_id)}
               disablePadding
               style={{ borderBottom: index !== projects.length - 1 ? '1px solid #ccc' : 'none' }}
             >
-              <ListItemButton component={Link} to={`/edit/${project.id}`} style={{ textDecoration: 'none' }}>
+              <ListItemButton component={Link} to={`/edit/${project.cartodb_id}`} style={{ textDecoration: 'none' }}>
                 <ListItemText primary={project.name} />
               </ListItemButton>
             </ListItem>
