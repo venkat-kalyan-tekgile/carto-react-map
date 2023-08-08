@@ -163,35 +163,27 @@
 import axios from 'axios';
 
 async function generateCartoToken() {
-  try {
-    const tokenData = {
-      grants: [
-        {
-          connection_name: 'carto_dw',
-          source: '`carto-demo-data`.demo_tables.airports',
-        },
-      ],
-      referers: [],
-      allowed_apis: ['sql', 'maps'],
-    };
-
-    const tokenConfig = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'https://gcp-us-east1.api.carto.com/v3/tokens',
+  const optionsMaster = {
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhIjoiYWNfMWg2eGQxc2MiLCJqdGkiOiIwNDcxMjlkYiJ9.qdrpqYggDrYqaO1Oher5_lQn1pYy8TYdywexIm8cCGg',
+          'content-type': 'application/x-www-form-urlencoded'
       },
-      data: JSON.stringify(tokenData),
-    };
+      data: new URLSearchParams({
+          audience: 'carto-cloud-native-api',
+          client_id: 'e9YD22g5mtXV6wLh8dYgBk369DnKLxU7',
+          client_secret: 'uKPFOENM3L8m7gi7uPUFH4_eKtdKDut0ORkKegShe54CSbJfc81G2o4uL2bT_2hW',
+          grant_type: 'client_credentials'
+      }),
+      method: 'POST',
+      url: 'https://auth.carto.com/oauth/token'
+  };
 
-    const tokenResponse = await axios(tokenConfig);
-
-    return tokenResponse.data?.token;
+  try {
+      const response = await axios(optionsMaster);
+      const result = response.data;
+      const accessToken = result.access_token; // Update the access token
+      console.log('token', accessToken);
   } catch (error) {
-    console.log('Error generating Carto API token:', error);
-    return null;
+      console.log(error);
   }
 }
 
@@ -231,8 +223,26 @@ async function fetchCartoData(cartoToken, setCartoData) {
   }
 }
 
+async function fetchProjects(cartoToken) {
+  try {
+    const fetchDataConfig = {
+      method: 'get',
+      url:
+        'https://gcp-asia-northeast1.api.carto.com/v3/sql/carto_dw/query?q=select * from carto-dw-ac-moe5kln.shared.eco_projects',
+      headers: {
+        Authorization: `Bearer ${cartoToken}`,
+      },
+    };
+
+    const response = await axios(fetchDataConfig);
+    console.log('carto', response.data);
+  } catch (error) {
+    console.log('Error fetching data from Carto:', error);
+  }
+}
 
 export {
   generateCartoToken,
+  fetchProjects,
   fetchCartoData
 }

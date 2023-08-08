@@ -259,9 +259,10 @@ import ProjectList from './ProjectList';
 import axios from 'axios';
 import { useMapContext } from './MapContext';
 import DeckGL from '@deck.gl/react';
-import { generateCartoToken, fetchCartoData } from '../utils/carto';
+import { generateCartoToken, fetchCartoData , fetchProjects} from '../utils/carto';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
+const TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000; 
 
 const MapComponent = ({ showProjectList }) => {
   const mapContainerRef = useRef(null);
@@ -271,19 +272,19 @@ const MapComponent = ({ showProjectList }) => {
   const { drawEnabled } = useMapContext();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [cartoToken, setCartoToken] = useState(null);
+  const [tokenExpiration, setTokenExpiration] = useState(0);
   const [selectedPolygon, setSelectedPolygon] = useState(null);
   const [isDeckGLLoaded, setIsDeckGLLoaded] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [projects, setProjects] = useState([])
+
 
   const latitude = 40.7128;
   const longitude = -74.0060;
   const center = [longitude, latitude];
 
-  const projects = [
-    { id: 1, name: 'Project 1' },
-    { id: 2, name: 'Project 2' },
-    { id: 3, name: 'Project 3' },
-  ];
+  
 
   const basemaps = [
     { id: 'streets-v11', name: 'Streets', image: '/path-to-streets-image.png' },
@@ -301,14 +302,26 @@ const MapComponent = ({ showProjectList }) => {
 
   const [cartoData, setCartoData] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      const cartoToken = await generateCartoToken();
-      if (cartoToken) {
-        fetchCartoData(cartoToken, setCartoData);
+  async function fetchProjectsWithToken(token) {
+    fetchProjects(token, setProjects);
+  }
+
+  async function fetchData() {
+    if (cartoToken && Date.now() < tokenExpiration) {
+      // Use the existing token if it's valid
+      fetchProjectsWithToken(cartoToken);
+    } else {
+      // Generate a new token and update the token state
+      const newToken = await generateCartoToken();
+      if (newToken) {
+        setCartoToken(newToken);
+        setTokenExpiration(Date.now() + TOKEN_EXPIRATION_TIME);
+        fetchProjectsWithToken(newToken);
       }
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, []);
   
