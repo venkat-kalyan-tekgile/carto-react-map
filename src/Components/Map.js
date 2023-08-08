@@ -278,11 +278,12 @@ const MapComponent = ({ showProjectList }) => {
   const [isDeckGLLoaded, setIsDeckGLLoaded] = useState(false);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [projects, setProjects] = useState([])
+  const [cartoData, setCartoData] = useState();
 
 
   const latitude = 40.7128;
   const longitude = -74.0060;
-  const center = [longitude, latitude];
+  const center = [139.839478, 35.682839];
 
   
 
@@ -300,7 +301,7 @@ const MapComponent = ({ showProjectList }) => {
     [-74.25559, 40.49612],
   ];
 
-  const [cartoData, setCartoData] = useState(null);
+  
 
   // async function fetchProjectsWithToken(token) {
   //   fetchProjects(token, setProjects);
@@ -324,6 +325,7 @@ const MapComponent = ({ showProjectList }) => {
   useEffect(() => {
     const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRVNGNZTHAwaThjYnVMNkd0LTE0diJ9.eyJodHRwOi8vYXBwLmNhcnRvLmNvbS9hY2NvdW50X2lkIjoiYWNfbW9lNWtsbiIsImh0dHA6Ly9hcHAuY2FydG8uY29tL2FjdGluZ19hcyI6ImF1dGgwfDYxNWJhYTJmZjVhNDAzMDA2OGE5YTBjMiIsImlzcyI6Imh0dHBzOi8vYXV0aC5jYXJ0by5jb20vIiwic3ViIjoiZTlZRDIyZzVtdFhWNndMaDhkWWdCazM2OURuS0x4VTdAY2xpZW50cyIsImF1ZCI6ImNhcnRvLWNsb3VkLW5hdGl2ZS1hcGkiLCJpYXQiOjE2OTE0NzUwNTUsImV4cCI6MTY5MTU2MTQ1NSwiYXpwIjoiZTlZRDIyZzVtdFhWNndMaDhkWWdCazM2OURuS0x4VTciLCJzY29wZSI6InJlYWQ6dG9rZW5zIHdyaXRlOnRva2VucyByZWFkOmltcG9ydHMgd3JpdGU6aW1wb3J0cyByZWFkOmNvbm5lY3Rpb25zIHdyaXRlOmNvbm5lY3Rpb25zIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicmVhZDp0b2tlbnMiLCJ3cml0ZTp0b2tlbnMiLCJyZWFkOmltcG9ydHMiLCJ3cml0ZTppbXBvcnRzIiwicmVhZDpjb25uZWN0aW9ucyIsIndyaXRlOmNvbm5lY3Rpb25zIl19.En_rHbarAgqNRgFBXyvaVj8dM6ij_tLOQ8kRIR7eTkUKkGNRfRs1GQtpLZz4gnd0TBKZexH4HkfS2Q3Fg6kDs3YeR15AThaifdoViCkuYafHrC53MujAhk7cAQDauCZx9NXjm8iYlLu1oCgSthui4ezX3SPiWz8RLkeePdozd7gSx-CbK3dbwle_d60C9zxb7exlW1Zd75ecmz8mMt1wPdWdF1zQT0JIFXp3a-rnZgLzu5-TKcfmRA4JHIGO5KcBUQ6cQWb2Mr7Dy_NkkZWuna-zgym0ri5ZxsNNexOVhYvMCX0lSyAXpKexJjhZd4YlctFQtHqR7xQbbKnHrNj_OQ'
     fetchProjects(token, setProjects);
+    fetchCartoData(token, setCartoData)
   }, []);
   
 
@@ -386,22 +388,24 @@ const MapComponent = ({ showProjectList }) => {
       map.removeLayer('carto-layer');
       map.removeSource('carto-data');
     }
-
+  
     map.addSource('carto-data', {
       type: 'geojson',
       data: data,
     });
-
+  
     map.addLayer({
       id: 'carto-layer',
-      type: 'fill',
+      type: 'circle',
       source: 'carto-data',
       paint: {
-        'fill-color': ['get', 'fillColor'], // Use the fillColor property from cartoData
-        'fill-opacity': 0.8,
+        'circle-color': ['get', 'fillColor'], // Use the fillColor property from cartoData
+        'circle-radius': 12,
+        'circle-opacity': 0.8,
       },
     });
   };
+  
 
   const handleDeckGLLoad = () => {
     setIsDeckGLLoaded(true);

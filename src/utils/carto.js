@@ -194,7 +194,7 @@ async function fetchCartoData(cartoToken, setCartoData) {
     const fetchDataConfig = {
       method: 'get',
       url:
-        'https://gcp-us-east1.api.carto.com/v3/sql/carto_dw/query?q=select * from carto-demo-data.demo_tilesets.covid19_vaccinated_usa_tileset',
+        'https://gcp-asia-northeast1.api.carto.com/v3/sql/carto_dw/query?q=SELECT ST_X(ST_Centroid(geom)) as lon , ST_Y(ST_Centroid(geom)) as lat, cartodb_id, name, descriptio, status FROM carto-dw-ac-moe5kln.shared.eco_projects  WHERE 1=1',
       headers: {
         Authorization: `Bearer ${cartoToken}`,
       },
@@ -202,26 +202,31 @@ async function fetchCartoData(cartoToken, setCartoData) {
 
     const response = await axios(fetchDataConfig);
 
-    const features = response.data.rows.map((row) => ({
-      type: 'Feature',
-      properties: {
-        id: row.cartodb_id,
-        name: row.name,
-        fillColor: [255, 0, 0], // Set the initial fill color here (Red)
-      },
-      geometry: JSON.parse(row.the_geom),
-    }));
-
-    console.log('carto', response.data);
-
-    setCartoData({
+    const cartoFeatures = response.data.rows;
+    console.log('carto layer', response.data.rows);
+    
+    const cartoGeoJSON = {
       type: 'FeatureCollection',
-      features: features,
-    });
+      features: cartoFeatures.map(feature => ({
+        type: 'Feature',
+        properties: {
+          fillColor: 'red', // Set the fill color for red dots
+          id: feature.cartodb_id, // Use the unique identifier from your data
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [feature.lon, feature.lat], // Use lat and lon fields for the coordinates
+        },
+      })),
+    };
+    console.log('carto data', cartoGeoJSON);
+
+    setCartoData(cartoGeoJSON);
   } catch (error) {
     console.log('Error fetching data from Carto:', error);
   }
 }
+
 
 async function fetchProjects(cartoToken, setProjects) {
   try {
@@ -236,7 +241,7 @@ async function fetchProjects(cartoToken, setProjects) {
 
     const response = await axios(fetchDataConfig);
     setProjects(response.data.rows)
-    console.log('carto', response.data.rows);
+    // console.log('carto', response.data.rows);
   } catch (error) {
     console.log('Error fetching data from Carto:', error);
   }
