@@ -259,6 +259,7 @@ import ProjectList from './ProjectList';
 import axios from 'axios';
 import { useMapContext } from './MapContext';
 import DeckGL from '@deck.gl/react';
+import { generateCartoToken, fetchCartoData } from '../utils/carto';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 
@@ -301,41 +302,16 @@ const MapComponent = ({ showProjectList }) => {
   const [cartoData, setCartoData] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'https://gcp-us-east1.api.carto.com/v3/sql/carto_dw/query?q=select * from carto-demo-data.demo_tilesets.covid19_vaccinated_usa_tileset',
-          {
-            headers: {
-              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhIjoiYWNfMWg2eGQxc2MiLCJqdGkiOiIwNDcxMjlkYiJ9.qdrpqYggDrYqaO1Oher5_lQn1pYy8TYdywexIm8cCGg'
-              // 'Cache-Control': 'max-age=300',
-            },
-          }
-        );
-
-        const features = response.data.rows.map((row) => ({
-          type: 'Feature',
-          properties: {
-            id: row.cartodb_id,
-            name: row.name,
-            fillColor: [255, 0, 0], // Set the initial fill color here (Red)
-          },
-          geometry: JSON.parse(row.the_geom),
-        }));
-
-        console.log('carto', response.data)
-
-        setCartoData({
-          type: 'FeatureCollection',
-          features: features,
-        });
-      } catch (error) {
-        console.log('Error fetching data:', error);
+    async function fetchData() {
+      const cartoToken = await generateCartoToken();
+      if (cartoToken) {
+        fetchCartoData(cartoToken, setCartoData);
       }
-    };
+    }
 
     fetchData();
   }, []);
+  
 
   useEffect(() => {
     const map = new mapboxgl.Map({
