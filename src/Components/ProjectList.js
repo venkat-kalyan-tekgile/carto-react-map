@@ -30,7 +30,7 @@ const ProjectList = ({ projects }) => {
           style={{ marginTop: '10px', borderRadius: '20px', width: 'fit-content', padding: '8px 16px' }}
         >
           <AddIcon style={{ marginRight: '8px' }} />
-          Create
+          Add Project
         </Button>
       </Grid>
       <Grid item xs={12}>
