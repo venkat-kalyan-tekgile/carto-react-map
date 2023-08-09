@@ -3,9 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TextField, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-const ProjectEditForm = () => {
+const ProjectEditForm = ({projects}) => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  console.log("pro", projects);
 
   const initialProject = {
     name: '',
@@ -37,7 +38,7 @@ const ProjectEditForm = () => {
       <Button onClick={handleBackClick} variant="text" startIcon={<ArrowBackIcon />} style={{ marginBottom: '10px' }}>
         Back
       </Button>
-      <h2>Edit Project</h2>
+      <h2>{projects.name}</h2>
       <form onSubmit={handleSubmit}>
         <TextField
           name="name"

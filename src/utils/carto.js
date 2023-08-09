@@ -43,7 +43,7 @@ async function fetchCartoData(cartoToken, setCartoData) {
     const response = await axios(fetchDataConfig);
 
     const cartoFeatures = response.data.rows;
-    console.log('carto layer', response.data.rows);
+    // console.log('carto layer', response.data.rows);
     
     const cartoGeoJSON = {
       type: 'FeatureCollection',
@@ -59,7 +59,7 @@ async function fetchCartoData(cartoToken, setCartoData) {
         },
       })),
     };
-    console.log('carto data', cartoGeoJSON);
+    // console.log('carto data', cartoGeoJSON);
 
     setCartoData(cartoGeoJSON);
   } catch (error) {

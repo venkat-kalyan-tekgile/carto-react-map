@@ -2,11 +2,19 @@ import React from 'react';
 import { List, ListItem, ListItemText, ListItemButton, Divider, Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import { useProjectsContext } from './ProjectContext';
+
+
 
 const ProjectList = ({ projects }) => {
+  const { setProjectsData } = useProjectsContext();
+  const { updateProjects } = useProjectsContext();
   const handleDoubleClick = (projectId) => {
     console.log(`Double-clicked on project ${projectId}`);
+    updateProjects(projectId); 
+    
   };
+  
 
   return (
     <Grid container direction="column" spacing={2}>
@@ -32,7 +40,7 @@ const ProjectList = ({ projects }) => {
         <React.Fragment key={project.cartodb_id}>
           <Grid item xs={12}>
             <ListItem
-              onDoubleClick={() => handleDoubleClick(project.cartodb_id)}
+              onClick={() => handleDoubleClick(project)}
               disablePadding
               style={{ borderBottom: index !== projects.length - 1 ? '1px solid #ccc' : 'none' }}
             >
