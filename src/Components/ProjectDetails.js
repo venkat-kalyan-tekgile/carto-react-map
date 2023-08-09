@@ -43,7 +43,7 @@ const ProjectEditForm = ({projects}) => {
         <TextField
           name="name"
           label="Name"
-          value={project.name}
+          value={projects.name}
           onChange={handleInputChange}
           fullWidth
           required
@@ -52,7 +52,7 @@ const ProjectEditForm = ({projects}) => {
         <TextField
           name="description"
           label="Description"
-          value={project.description}
+          value={projects.description}
           onChange={handleInputChange}
           fullWidth
           multiline
