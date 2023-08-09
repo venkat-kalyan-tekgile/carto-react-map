@@ -239,7 +239,10 @@ const MapComponent = ({ showProjectList }) => {
             <CircularProgress />
           </div>
         )}
-        <div ref={mapContainerRef} style={{ flex: '1', position: 'relative' }}>
+       <div
+      ref={mapContainerRef}
+      style={{ flex: '1', position: 'relative', overflow: 'hidden' }}
+    >
           <DeckGL
             viewState={{
               latitude: 40.7128,

@@ -17,7 +17,7 @@ const ProjectList = ({ projects }) => {
   
 
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid container direction="column" spacing={2} style={{ flexGrow: 1, overflowY: 'auto' }}>
       <Grid item xs={12}>
         <Divider />
       </Grid>
