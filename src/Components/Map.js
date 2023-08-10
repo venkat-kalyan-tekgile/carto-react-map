@@ -254,19 +254,20 @@ const MapComponent = ({ showProjectList }) => {
             onLoad={handleDeckGLLoad} 
           />
           <div
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              padding: '10px',
-              backgroundColor: '#fff',
-              borderRadius: '4px',
-              zIndex: 1,
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
+  style={{
+    position: 'absolute',
+    bottom: '10px',
+    right: '10px',
+    padding: '10px',
+    backgroundColor: '#fff',
+    borderRadius: '4px',
+    zIndex: 1,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    alignItems: 'center',
+  }}
+>
+
             <span style={{ marginRight: '10px' }}>Select Basemap:</span>
             <select
               value={selectedBasemap}
@@ -286,17 +287,6 @@ const MapComponent = ({ showProjectList }) => {
           </div>
         </div>
         {/* Add a div for the small map */}
-        <div
-          // ref={smallMapRef}
-          style={{
-            position: 'absolute',
-            bottom: '10px',
-            right: '10px',
-            width: '200px',
-            height: '200px',
-            border: '1px solid #ccc',
-          }}
-        ></div>
       </div>
     </div>
   );
