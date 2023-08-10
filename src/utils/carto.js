@@ -52,6 +52,7 @@ async function fetchCartoData(cartoToken, setCartoData) {
         properties: {
           fillColor: 'red', // Set the fill color for red dots
           id: feature.cartodb_id, // Use the unique identifier from your data
+          name: feature.name
         },
         geometry: {
           type: 'Point',
