@@ -1,8 +1,8 @@
 import React from 'react';
-import ProjectEditForm from './ProjectDetails';
-import MapTabs from './MapTabs';
-import MapComponent from './Map';
-import { useProjectsContext } from './ProjectContext';
+import ProjectEditForm from '../Components/Project/ProjectDetails';
+import MapTabs from '../Components/common/MapTabs';
+import MapComponent from '../Components/Map/Map';
+import { useProjectsContext } from '../Context/ProjectContext';
 
 const EditPage = () => {
   const { projectsData } = useProjectsContext();

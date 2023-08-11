@@ -5,11 +5,11 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { CircularProgress, Dialog, DialogContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button } from '@mui/material';
-import ProjectList from './ProjectList';
-import { useMapContext } from './MapContext';
+import ProjectList from '../Project/ProjectList';
+import { useMapContext } from '../../Context/MapContext';
 import DeckGL from '@deck.gl/react';
 import { NavigationControl } from 'mapbox-gl';
-import { generateCartoToken, fetchCartoData , fetchProjects} from '../utils/carto';
+import { generateCartoToken, fetchCartoData , fetchProjects} from '../../utils/carto';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
 const TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000; 

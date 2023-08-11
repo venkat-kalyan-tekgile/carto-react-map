@@ -1,8 +1,8 @@
 import React from 'react';
 import AppRouter from './AppRouter';
-import Navbar from './Components/Navbar';
-import MapContextProvider from './Components/MapContext';
-import { ProjectsProvider } from './Components/ProjectContext';
+import Navbar from './Components/common/Navbar';
+import MapContextProvider from './Context/MapContext';
+import { ProjectsProvider } from './Context/ProjectContext';
 
 const username = 'Venkat';
 

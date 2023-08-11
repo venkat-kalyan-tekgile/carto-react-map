@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MapComponent from './Components/Map';
-import EditPageWithMap from './Components/EditPageWithMap';
+import MapComponent from './Components/Map/Map';
+import EditPageWithMap from './Pages/EditPageWithMap';
 
 const AppRouter = () => {
   return (

@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import { useMapContext } from './MapContext';
+import { useMapContext } from '../../Context/MapContext';
 
 const MapTabs = () => {
   const { setDrawEnabled } = useMapContext();
