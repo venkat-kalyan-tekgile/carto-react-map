@@ -5,7 +5,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { CircularProgress, Dialog, DialogContent, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Button } from '@mui/material';
-import ProjectList from '../Project/ProjectList';
+
 import { useMapContext } from '../../Context/MapContext';
 import DeckGL from '@deck.gl/react';
 import { NavigationControl } from 'mapbox-gl';
@@ -218,11 +218,6 @@ const MapComponent = ({ showProjectList }) => {
       </Dialog>
 
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
-        {/* {showProjectList && (
-          <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
-            <ProjectList projects={projects} />
-          </div>
-        )} */}
         {isLoading && (
           <div
             style={{
