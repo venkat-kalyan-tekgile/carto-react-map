@@ -69,7 +69,7 @@ async function fetchCartoData(cartoToken, setCartoData) {
 }
 
 
-async function fetchProjects(cartoToken, setProjects) {
+async function fetchProjects(cartoToken, updateProjects) {
   try {
     const fetchDataConfig = {
       method: 'get',
@@ -81,7 +81,7 @@ async function fetchProjects(cartoToken, setProjects) {
     };
 
     const response = await axios(fetchDataConfig);
-    setProjects(response.data.rows)
+    updateProjects(response.data.rows)
     // console.log('carto', response.data.rows);
   } catch (error) {
     console.log('Error fetching data from Carto:', error);

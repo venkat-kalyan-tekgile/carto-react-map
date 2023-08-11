@@ -9,6 +9,7 @@ import ProjectList from '../Project/ProjectList';
 import { useMapContext } from '../../Context/MapContext';
 import DeckGL from '@deck.gl/react';
 import { NavigationControl } from 'mapbox-gl';
+import { useProjectsContext } from '../../Context/ProjectContext';
 import { generateCartoToken, fetchCartoData , fetchProjects} from '../../utils/carto';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmVua2F0a2FseWFuIiwiYSI6ImNsa2trazd0bTA0eGkzcm9lZG9ieHQwMG8ifQ.-8uxfBRQZHGBtLaK6egPvQ';
@@ -20,6 +21,7 @@ const MapComponent = ({ showProjectList }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBasemap, setSelectedBasemap] = useState('streets-v11');
   const { drawEnabled } = useMapContext();
+  const { updateProjects } = useProjectsContext();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [cartoToken, setCartoToken] = useState(null);
@@ -62,8 +64,8 @@ const MapComponent = ({ showProjectList }) => {
   // }
 
   useEffect(() => {
-    const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRVNGNZTHAwaThjYnVMNkd0LTE0diJ9.eyJodHRwOi8vYXBwLmNhcnRvLmNvbS9hY2NvdW50X2lkIjoiYWNfbW9lNWtsbiIsImh0dHA6Ly9hcHAuY2FydG8uY29tL2FjdGluZ19hcyI6ImF1dGgwfDYxNWJhYTJmZjVhNDAzMDA2OGE5YTBjMiIsImlzcyI6Imh0dHBzOi8vYXV0aC5jYXJ0by5jb20vIiwic3ViIjoiZTlZRDIyZzVtdFhWNndMaDhkWWdCazM2OURuS0x4VTdAY2xpZW50cyIsImF1ZCI6ImNhcnRvLWNsb3VkLW5hdGl2ZS1hcGkiLCJpYXQiOjE2OTE1NTI4NzYsImV4cCI6MTY5MTYzOTI3NiwiYXpwIjoiZTlZRDIyZzVtdFhWNndMaDhkWWdCazM2OURuS0x4VTciLCJzY29wZSI6InJlYWQ6dG9rZW5zIHdyaXRlOnRva2VucyByZWFkOmltcG9ydHMgd3JpdGU6aW1wb3J0cyByZWFkOmNvbm5lY3Rpb25zIHdyaXRlOmNvbm5lY3Rpb25zIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicmVhZDp0b2tlbnMiLCJ3cml0ZTp0b2tlbnMiLCJyZWFkOmltcG9ydHMiLCJ3cml0ZTppbXBvcnRzIiwicmVhZDpjb25uZWN0aW9ucyIsIndyaXRlOmNvbm5lY3Rpb25zIl19.CFeoMhT_BcttpJduVCnPUcaZmjLPwjF32RZJ3CaznERGWfaBL2wQtcmQKJbdcHL3BXh45Bq2-vLrgXk28n4TarJNvPcjtw0osZAmQ5o2AX2VfAg-lLDwLd7HbwipvIf1huid8IUcLKK56aeKxPdMm20Xgr1ppK2woYmQTexkDcUfi-Mif_B_J_pGunXCo3BI3F6PhN0tAv2H3frjgB0mo-xuDsBl_f0lC9RtKoe9rOjueTMl6FHYdYffRGowj_cIwAKZ7N8NA77GJ6JBfik2GuwQBNsAvlavZ_7yAYTjdzmxNUEEjFbW04j8w9VnW1AZPPmxZfH3r3FxLmPuyJghPA'
-    fetchProjects(token, setProjects);
+    const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRVNGNZTHAwaThjYnVMNkd0LTE0diJ9.eyJodHRwOi8vYXBwLmNhcnRvLmNvbS9hY2NvdW50X2lkIjoiYWNfbW9lNWtsbiIsImh0dHA6Ly9hcHAuY2FydG8uY29tL2FjdGluZ19hcyI6ImF1dGgwfDYxNWJhYTJmZjVhNDAzMDA2OGE5YTBjMiIsImlzcyI6Imh0dHBzOi8vYXV0aC5jYXJ0by5jb20vIiwic3ViIjoiZTlZRDIyZzVtdFhWNndMaDhkWWdCazM2OURuS0x4VTdAY2xpZW50cyIsImF1ZCI6ImNhcnRvLWNsb3VkLW5hdGl2ZS1hcGkiLCJpYXQiOjE2OTE3NDI5OTksImV4cCI6MTY5MTgyOTM5OSwiYXpwIjoiZTlZRDIyZzVtdFhWNndMaDhkWWdCazM2OURuS0x4VTciLCJzY29wZSI6InJlYWQ6dG9rZW5zIHdyaXRlOnRva2VucyByZWFkOmltcG9ydHMgd3JpdGU6aW1wb3J0cyByZWFkOmNvbm5lY3Rpb25zIHdyaXRlOmNvbm5lY3Rpb25zIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicmVhZDp0b2tlbnMiLCJ3cml0ZTp0b2tlbnMiLCJyZWFkOmltcG9ydHMiLCJ3cml0ZTppbXBvcnRzIiwicmVhZDpjb25uZWN0aW9ucyIsIndyaXRlOmNvbm5lY3Rpb25zIl19.kXm0dFKHS8fht30mS7ai0lBRsqfHV6LHvzBxhvNY0xg1f4AP67LKAg0HGxwKFn_hNUDkgZSD6fvM0ZTNrLWdtUboBpnn7AVS1Dy3k8Ohk8DDeteIE9iYLBXl12m-nW4ibz3akjj5cxmhmxS59JNXfdMo7nOYVcCP7dZkCjvBGMH7VnUx6AzEudIRIQ4t92FLbI7oPNWEAqJ7hkfzh78ExULQJMCDI4hGoO1LDHZQJoRcQpkrwElQTH0JJIWVI63wDJp4h1D3I14MROZkpJ4YayCbYW5Nt36zgdcwXt63Va0uLCHUhlTzjH73Fi1ql8zAdJDONDZrDuCEw_VA9csZZw'
+    fetchProjects(token, updateProjects);
     fetchCartoData(token, setCartoData)
   }, []);
   
@@ -216,11 +218,11 @@ const MapComponent = ({ showProjectList }) => {
       </Dialog>
 
       <div style={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
-        {showProjectList && (
+        {/* {showProjectList && (
           <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
             <ProjectList projects={projects} />
           </div>
-        )}
+        )} */}
         {isLoading && (
           <div
             style={{

@@ -1,17 +1,19 @@
 import React from 'react';
 import ProjectList from '../Components/Project/ProjectList';
 import MapComponent from '../Components/Map/Map'; // Update the import path as needed
+import { useProjectsContext } from '../Context/ProjectContext';
 
-const MapLayout = ({ projects, showProjectList }) => {
+const MapLayout = () => {
+const { projectsData } = useProjectsContext();
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
-      {showProjectList && (
+      
         <div style={{ flex: '0 0 17%', backgroundColor: '#f0f0f0' }}>
-          <ProjectList projects={projects} />
+          <ProjectList projects={projectsData} />
         </div>
-      )}
+      
       <div style={{ flex: '1', position: 'relative', overflow: 'hidden' }}>
-        <MapComponent showProjectList={showProjectList} />
+        <MapComponent />
       </div>
     </div>
   );
