@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MapComponent from './Components/Map/Map';
 import MapLayout from './Pages/HomePage';
 import EditPageWithMap from './Pages/EditPageWithMap';
 

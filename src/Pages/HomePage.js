@@ -1,6 +1,6 @@
 import React from 'react';
 import ProjectList from '../Components/Project/ProjectList';
-import MapComponent from '../Components/Map/Map'; // Update the import path as needed
+import MapComponent from '../Components/Map/Map';
 import { useProjectsContext } from '../Context/ProjectContext';
 
 const MapLayout = () => {
