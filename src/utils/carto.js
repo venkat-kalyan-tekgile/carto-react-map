@@ -74,7 +74,7 @@ async function fetchProjects(cartoToken, updateProjects) {
     const fetchDataConfig = {
       method: 'get',
       url:
-        'https://gcp-asia-northeast1.api.carto.com/v3/sql/carto_dw/query?q=select * from carto-dw-ac-moe5kln.shared.eco_projects',
+        'https://gcp-asia-northeast1.api.carto.com/v3/sql/carto_dw/query?q=select * from carto-dw-ac-moe5kln.shared.ue_net_projects',
       headers: {
         Authorization: `Bearer ${cartoToken}`,
       },
