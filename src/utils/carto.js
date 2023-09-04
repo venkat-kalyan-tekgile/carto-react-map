@@ -34,7 +34,7 @@ async function fetchCartoData(cartoToken, setCartoData) {
     const fetchDataConfig = {
       method: 'get',
       url:
-        'https://gcp-asia-northeast1.api.carto.com/v3/sql/carto_dw/query?q=SELECT ST_X(ST_Centroid(geom)) as lon , ST_Y(ST_Centroid(geom)) as lat, cartodb_id, name, descriptio, status FROM carto-dw-ac-moe5kln.shared.eco_projects  WHERE 1=1',
+        'https://gcp-asia-northeast1.api.carto.com/v3/sql/carto_dw/query?q=SELECT ST_X(ST_Centroid(geom)) as lon , ST_Y(ST_Centroid(geom)) as lat, cartodb_id, name, description, status FROM carto-dw-ac-moe5kln.shared.ue_net_projects  WHERE 1=1',
       headers: {
         Authorization: `Bearer ${cartoToken}`,
       },
